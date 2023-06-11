@@ -14,18 +14,6 @@ def rle_decode(mask_rle, shape=(768, 768)):
         img[lo:hi] = 1
     return img.reshape(shape).T
 
-
-def rle_code(img, shape=(768, 768)) -> str:
-    img = img.astype('float32')
-    img = cv2.resize(img, shape, interpolation=cv2.INTER_AREA)
-    img = np.stack(np.vectorize(lambda x: 0 if x < 0.1 else 1)(img), axis=1)
-    pixels = img.T.flatten()
-    pixels = np.concatenate([[0], pixels, [0]])
-    runs = np.where(pixels[1:] != pixels[:-1])[0] + 1
-    runs[1::2] -= runs[::2]
-    return ' '.join(str(x) for x in runs)
-
-
 def masks_as_image(in_mask_list):
     all_masks = np.zeros((768, 768), dtype=np.uint8)
     for mask in in_mask_list:

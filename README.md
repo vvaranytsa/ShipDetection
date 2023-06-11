@@ -105,7 +105,8 @@ function to produce the segmentation mask.
 To test the trained model, the `inference.py` can be used. A subset of images is randomly selected from the test files.
 The number of images to check is defined by `num_images_to_check`.
 
-Then, for each image in the selected subset, the `generate_prediction` function is generating predictions. The `generate_prediction`
+Then, for each image in the selected subset, the `generate_prediction` function is generating predictions.
+The `generate_prediction`
 function takes the test directory, image file name, and the model as inputs. It reads the RGB image using `cv2.imread`
 and performs any necessary preprocessing steps, such as scaling and converting the color space to RGB. Then, it feeds
 the preprocessed image to the model for prediction using `model.predict`. The predicted mask is obtained and returned
@@ -120,3 +121,8 @@ after removing the batch dimension using `np.squeeze`. The function also returns
 ![pic](images/inference3.png)
 
 ![pic](images/inference4.png)
+
+![pic](images/inference5.png)
+
+As you can see, the model can predict the location of ships, but also it is not perfect and predicts some islands to be
+ships. 

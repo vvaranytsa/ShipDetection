@@ -54,13 +54,8 @@ def fit():
 
     step_count = min(max_train_steps, train_df.shape[0] // batch)
     aug_gen = create_augmentation(make_image(train_df))
-    loss_history = [train_model.fit(aug_gen,
-                                    steps_per_epoch=step_count,
-                                    epochs=max_train_epochs,
-                                    validation_data=(valid_x, valid_y),
-                                    callbacks=callbacks_list,
-                                    workers=1
-                                    )]
+    loss_history = [train_model.fit(aug_gen, steps_per_epoch=step_count, epochs=max_train_epochs,
+                                    validation_data=(valid_x, valid_y), callbacks=callbacks_list, workers=1)]
     return loss_history
 
 
