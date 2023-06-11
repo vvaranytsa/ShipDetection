@@ -70,11 +70,11 @@ test_root = base + '/test_v2/'
   The
   resulting training and validation sets were stored in train_df and valid_df, respectively.
 
-- **Generating Image Data Generators**: Image data generators were created using the `make_image_gen` function.
+- **Generating Image Data Generators**: Image data generators were created using the `make_image` function.
 
 - **Data Augmentation Configuration**: To enhance the diversity of the training data and improve model generalization,
-  data augmentation techniques were applied. The `create_aug_gen` function was used to create an augmented generator. A
-  single augmented batch of data (`t_x` and `t_y`) was generated from `cur_gen`.
+  data augmentation techniques were applied. The `create_augmentation` function was used to create an augmented
+  generator.
 
 ### UNet
 
@@ -105,7 +105,7 @@ function to produce the segmentation mask.
 To test the trained model, the `inference.py` can be used. A subset of images is randomly selected from the test files.
 The number of images to check is defined by `num_images_to_check`.
 
-Then, for each image in the selected subset, the `gen_pred` function is generating predictions. The `gen_pred`
+Then, for each image in the selected subset, the `generate_prediction` function is generating predictions. The `generate_prediction`
 function takes the test directory, image file name, and the model as inputs. It reads the RGB image using `cv2.imread`
 and performs any necessary preprocessing steps, such as scaling and converting the color space to RGB. Then, it feeds
 the preprocessed image to the model for prediction using `model.predict`. The predicted mask is obtained and returned

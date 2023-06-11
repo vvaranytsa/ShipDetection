@@ -34,7 +34,7 @@ def masks_as_image(in_mask_list):
     return all_masks
 
 
-def gen_pred(test_dir, img, model):
+def generate_prediction(test_dir, img, model):
     rgb_path = os.path.join(test_dir, img)
 
     img = cv2.imread(rgb_path)
@@ -49,7 +49,7 @@ def gen_pred(test_dir, img, model):
     return cv2.imread(rgb_path), pred
 
 
-def make_image_gen(in_df, batch_size=batch):
+def make_image(in_df, batch_size=batch):
     image_ids = in_df['ImageId'].unique()  # Get unique image IDs
     num_images = len(image_ids)
     image_indices = np.arange(num_images)  # Create an array of indices for shuffling

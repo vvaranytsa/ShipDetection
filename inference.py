@@ -1,6 +1,6 @@
 import tensorflow as tf
 from config import *
-from model_funcs.func import gen_pred
+from model_funcs.func import generate_prediction
 from model_funcs.unet import IoU_loss, dice_coefficient
 from matplotlib import pyplot as plt
 import os
@@ -18,7 +18,7 @@ check = random.sample(test_files, num_images_to_check)
 # Loop over the images
 for image_file in check:
     # Make predictions
-    img, pred = gen_pred(test_root, image_file, final_model)
+    img, pred = generate_prediction(test_root, image_file, final_model)
     # Plot the images
     fig, axs = plt.subplots(1, 2, figsize=(5, 5))
     axs[0].imshow(img)

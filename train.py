@@ -29,13 +29,13 @@ train_df = mask.merge(train_ids, on='ImageId')
 valid_df = mask.merge(valid_ids, on='ImageId')
 
 # Generating image data generators
-train_gen = make_image_gen(train_df)
+train_gen = make_image(train_df)
 train_x, train_y = next(train_gen)
 
-valid_x, valid_y = next(make_image_gen(valid_df, valid_img))
+valid_x, valid_y = next(make_image(valid_df, valid_img))
 
 # Data augmentation configuration
-cur_gen = create_aug_gen(train_gen)
+cur_gen = create_augmentation(train_gen)
 t_x, t_y = next(cur_gen)
 
 # Creating the UNet model
@@ -53,7 +53,7 @@ def fit():
     train_model.compile(optimizer='adam', loss=IoU_loss, metrics=[dice_coefficient])
 
     step_count = min(max_train_steps, train_df.shape[0] // batch)
-    aug_gen = create_aug_gen(make_image_gen(train_df))
+    aug_gen = create_augmentation(make_image(train_df))
     loss_history = [train_model.fit(aug_gen,
                                     steps_per_epoch=step_count,
                                     epochs=max_train_epochs,
