@@ -27,22 +27,27 @@ def rle_code(img, shape=(768, 768)) -> str:
 
 
 def masks_as_image(in_mask_list):
-    all_masks = np.zeros((768, 768), dtype = np.uint8)
+    all_masks = np.zeros((768, 768), dtype=np.uint8)
     for mask in in_mask_list:
         if isinstance(mask, str):
             all_masks |= rle_decode(mask)
     return all_masks
 
+
 def gen_pred(test_dir, img, model):
     rgb_path = os.path.join(test_dir, img)
+
     img = cv2.imread(rgb_path)
     img = img[::img_scaling[0], ::img_scaling[1]]
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = img / 255.0
     img = np.expand_dims(img, axis=0)
+
     pred = model.predict(img)
     pred = np.squeeze(pred, axis=0)
+    print(pred)
     return cv2.imread(rgb_path), pred
+
 
 def make_image_gen(in_df, batch_size=batch):
     image_ids = in_df['ImageId'].unique()  # Get unique image IDs
@@ -53,7 +58,7 @@ def make_image_gen(in_df, batch_size=batch):
         np.random.shuffle(image_indices)  # Shuffle the indices
 
         for batch_start in range(0, num_images, batch_size):
-            batch_indices = image_indices[batch_start : batch_start + batch_size]  # Select indices for the current batch
+            batch_indices = image_indices[batch_start: batch_start + batch_size]  # Select indices for the current batch
             batch_image_ids = image_ids[batch_indices]  # Get the image IDs for the current batch
 
             batch_rgb_images = []
@@ -74,4 +79,3 @@ def make_image_gen(in_df, batch_size=batch):
                 batch_masks.append(mask_image)
 
             yield np.stack(batch_rgb_images, 0) / 255.0, np.stack(batch_masks, 0).astype(np.float32)
-

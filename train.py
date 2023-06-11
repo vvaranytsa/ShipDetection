@@ -9,7 +9,7 @@ import os
 # Defining roots
 train = os.listdir(train_root)
 test = os.listdir(test_root)
-
+print(len(train))
 # Import file with coordinates
 mask = pd.read_csv(os.path.join(base, 'csv/train_ship_segmentations_v2.csv'))
 
@@ -22,7 +22,6 @@ mask.drop('ships', axis=1, inplace=True)
 # Balancing the dataset
 balanced_train_df = unique_img_ids.groupby('ships').apply(
     lambda x: x.sample(samples_group) if len(x) > samples_group else x)
-balanced_train_df['ships'].plot.hist(bins=balanced_train_df['ships'].max() + 1)
 
 # Splitting data into training and validation sets
 train_ids, valid_ids = train_test_split(balanced_train_df, test_size=0.2, stratify=balanced_train_df['ships'])
@@ -43,21 +42,10 @@ t_x, t_y = next(cur_gen)
 train_model = unet()
 
 # Configuring checkpoints and callbacks
-weight_path = "model_folder/{}_weights.best.hdf5".format('train_model')
+path = "model_folder/{}.best.hdf5".format('train_model')
 
-checkpoint = ModelCheckpoint(
-    weight_path,
-    monitor='val_loss',
-    verbose=1,
-    mode='min',
-    save_weights_only=True
-)
-early_stopping = EarlyStopping(
-    monitor="val_loss",
-    mode="min",
-    patience=15
-)
-
+checkpoint = ModelCheckpoint(path, monitor='val_loss', verbose=1, mode='min', save_weights_only=True)
+early_stopping = EarlyStopping(monitor="val_loss", mode="min", patience=15)
 callbacks_list = [checkpoint, early_stopping]
 
 
@@ -67,12 +55,12 @@ def fit():
     step_count = min(max_train_steps, train_df.shape[0] // batch)
     aug_gen = create_aug_gen(make_image_gen(train_df))
     loss_history = [train_model.fit(aug_gen,
-                                  steps_per_epoch=step_count,
-                                  epochs=max_train_epochs,
-                                  validation_data=(valid_x, valid_y),
-                                  callbacks=callbacks_list,
-                                  workers=1
-                                  )]
+                                    steps_per_epoch=step_count,
+                                    epochs=max_train_epochs,
+                                    validation_data=(valid_x, valid_y),
+                                    callbacks=callbacks_list,
+                                    workers=1
+                                    )]
     return loss_history
 
 
@@ -81,4 +69,5 @@ loss_history = fit()
 
 # Saving the model
 final_model = train_model
+final_model.summary()
 final_model.save('model_folder/final_model.h5')

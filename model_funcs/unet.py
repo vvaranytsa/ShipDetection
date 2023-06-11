@@ -67,6 +67,7 @@ def IoU_loss(y_true, y_pred, eps=1e-6):
     iou_loss = -tf.reduce_mean((intersection + eps) / (union + eps), axis=0)
     return iou_loss
 
+# Dice coefficient
 def dice_coefficient(y_true, y_pred, smooth=1):
     intersection = tf.reduce_sum(tf.multiply(y_true, y_pred), axis=[1, 2, 3])
     union = tf.reduce_sum(y_true, axis=[1, 2, 3]) + tf.reduce_sum(y_pred, axis=[1, 2, 3])

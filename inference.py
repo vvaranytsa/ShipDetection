@@ -9,7 +9,6 @@ import random
 # Load the model
 object_scope = {'IoU_loss': IoU_loss, 'dice_coefficient': dice_coefficient}
 final_model = tf.keras.models.load_model('model_folder/final_model.h5', custom_objects=object_scope)
-
 test_files = os.listdir(test_root)
 
 # Choose a random subset of images to check

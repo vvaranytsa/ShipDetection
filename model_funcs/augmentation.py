@@ -16,15 +16,8 @@ label_gen = ImageDataGenerator(**dg_args)
 
 
 def create_aug_gen(in_gen):
-    for in_x, in_y in in_gen:
+    for x, y in in_gen:
         seed = 42
-        g_x = image_gen.flow(in_x,
-                             batch_size=in_x.shape[0],
-                             seed=seed,
-                             shuffle=True)
-        g_y = label_gen.flow(in_y,
-                             batch_size=in_x.shape[0],
-                             seed=seed,
-                             shuffle=True)
-
+        g_x = image_gen.flow(x, batch_size= x.shape[0], seed=seed, shuffle=True)
+        g_y = label_gen.flow(y, batch_size=x.shape[0], seed=seed, shuffle=True)
         yield next(g_x), next(g_y)
