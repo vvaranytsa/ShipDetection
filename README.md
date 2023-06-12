@@ -40,25 +40,6 @@ satellite images are without ships.
 
 ## Training our model
 
-### Configuration
-
-> In the `config.py` you can set all needed settings for training model
-
-```python
-# Defining some properties
-img_scaling = (3, 3)
-max_train_steps = 10
-max_train_epochs = 10
-batch = 32
-valid_img = 900
-samples_group = 4000
-
-# defining roots
-base = '../test/'
-train_root = base + '/train_v2/'
-test_root = base + '/test_v2/'
-```
-
 ### Data preparation
 
 - **Balancing the Dataset**: To address the class imbalance issue mentioned earlier, the `unique_img_ids` DataFrame was
@@ -125,4 +106,28 @@ after removing the batch dimension using `np.squeeze`. The function also returns
 ![pic](images/inference5.png)
 
 As you can see, the model can predict the location of ships, but also it is not perfect and predicts some islands to be
-ships. 
+ships.
+
+## How to use my program?
+
+First of all, configure all paths and settings in `config.py`.
+
+```python
+# Defining some properties
+img_scaling = (3, 3)
+max_train_steps = 10
+max_train_epochs = 10
+batch = 32
+valid_img = 900
+samples_group = 4000
+
+# defining roots
+base = '../test/'
+train_root = base + '/train_v2/'
+test_root = base + '/test_v2/'
+```
+
+After this, you can run `train.py`, which will train the model and save it in `model_folder`. To check whether our model
+is working correctly you need to run `inference.py`, where you will see some randomly picked images from the test folder
+and their predictions. Or you can just run `inference.py` because I have already provided the folder with the trained
+model into this project.
