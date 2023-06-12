@@ -105,6 +105,8 @@ after removing the batch dimension using `np.squeeze`. The function also returns
 
 ![pic](images/inference5.png)
 
+![pic](images/inference6.png)
+
 As you can see, the model can predict the location of ships, but also it is not perfect and predicts some islands to be
 ships.
 
